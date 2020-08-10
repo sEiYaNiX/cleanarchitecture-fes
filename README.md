@@ -1,7 +1,7 @@
 # cleanarchitecture-fes
 CleanArchitectureのサンプル
 
-# DBの初期化・マイグレーション
+## DBの初期化・マイグレーション
 ```
 export MYSQL_ARGS=cafes:cafes99@(localhost:3306)/cleanarchitecture_fes
 go run maintain/initdb.go
@@ -13,7 +13,7 @@ go run maintain/initdb.go
 go run src/entrypoint/*.go
 ```
 
-## GraphQL codegen
+### GraphQL codegen
 
 ```
 go run github.com/99designs/gqlgen --config graphql_schema/gqlgen.yml
