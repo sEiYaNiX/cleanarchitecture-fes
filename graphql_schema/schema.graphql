@@ -1,0 +1,25 @@
+# GetFesEvent
+input GetFesEventInput {
+  id: String
+}
+type GetFesEventPayload {
+  fesEvents: [FesEvent]
+}
+
+# SaveFesEvent
+input SaveFesEevntInput {
+  title: String!
+  speaker: String!
+}
+
+type Query {
+  # GetFesEvent
+  GetFesEvent(
+      input: GetFesEventInput!
+  ): GetFesEventPayload!
+}
+
+type Mutation {
+  # SaveFesEvent
+  SaveFesEvent(input: SaveFesEevntInput!): Boolean!
+}

@@ -1,0 +1,8 @@
+schema:
+  - graphql_schema/*.graphql
+exec:
+  filename: src/adaptor/graphqlgen/graphql_gen.go
+  package: graphqlgen
+model:
+  filename: src/adaptor/graphqlgen/models_gen.go
+  package: graphqlgen
