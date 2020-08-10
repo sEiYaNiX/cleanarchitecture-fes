@@ -4,7 +4,7 @@ CleanArchitectureのサンプル
 ## 起動
 
 ```
-go run src/entrypoint/main.go
+go run src/entrypoint/*.go
 ```
 
 ## GraphQL codegen
