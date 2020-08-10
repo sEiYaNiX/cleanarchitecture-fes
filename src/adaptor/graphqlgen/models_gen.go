@@ -3,9 +3,9 @@
 package graphqlgen
 
 type FesEvent struct {
-	ID       string `json:"id"`
-	Title    string `json:"title"`
-	Speakers string `json:"speakers"`
+	ID      string `json:"id"`
+	Title   string `json:"title"`
+	Speaker string `json:"speaker"`
 }
 
 type GetFesEventInput struct {

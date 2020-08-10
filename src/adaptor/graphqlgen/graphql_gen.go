@@ -43,9 +43,9 @@ type DirectiveRoot struct {
 
 type ComplexityRoot struct {
 	FesEvent struct {
-		ID       func(childComplexity int) int
-		Speakers func(childComplexity int) int
-		Title    func(childComplexity int) int
+		ID      func(childComplexity int) int
+		Speaker func(childComplexity int) int
+		Title   func(childComplexity int) int
 	}
 
 	GetFesEventPayload struct {
@@ -90,12 +90,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.FesEvent.ID(childComplexity), true
 
-	case "FesEvent.speakers":
-		if e.complexity.FesEvent.Speakers == nil {
+	case "FesEvent.speaker":
+		if e.complexity.FesEvent.Speaker == nil {
 			break
 		}
 
-		return e.complexity.FesEvent.Speakers(childComplexity), true
+		return e.complexity.FesEvent.Speaker(childComplexity), true
 
 	case "FesEvent.title":
 		if e.complexity.FesEvent.Title == nil {
@@ -202,7 +202,7 @@ var sources = []*ast.Source{
 	&ast.Source{Name: "graphql_schema/model.graphql", Input: `type FesEvent{
   id: String!
   title: String!
-  speakers: String!
+  speaker: String!
 }
 `, BuiltIn: false},
 	&ast.Source{Name: "graphql_schema/schema.graphql", Input: `# GetFesEvent
@@ -383,7 +383,7 @@ func (ec *executionContext) _FesEvent_title(ctx context.Context, field graphql.C
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _FesEvent_speakers(ctx context.Context, field graphql.CollectedField, obj *FesEvent) (ret graphql.Marshaler) {
+func (ec *executionContext) _FesEvent_speaker(ctx context.Context, field graphql.CollectedField, obj *FesEvent) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -400,7 +400,7 @@ func (ec *executionContext) _FesEvent_speakers(ctx context.Context, field graphq
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Speakers, nil
+		return obj.Speaker, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1725,8 +1725,8 @@ func (ec *executionContext) _FesEvent(ctx context.Context, sel ast.SelectionSet,
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
-		case "speakers":
-			out.Values[i] = ec._FesEvent_speakers(ctx, field, obj)
+		case "speaker":
+			out.Values[i] = ec._FesEvent_speaker(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}

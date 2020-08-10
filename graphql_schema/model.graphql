@@ -1,5 +1,5 @@
 type FesEvent{
   id: String!
   title: String!
-  speakers: String!
+  speaker: String!
 }

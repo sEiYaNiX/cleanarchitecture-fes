@@ -32,7 +32,7 @@ func (q *queryResolver) GetFesEvent(
 			{
 				ID:       "dummy001",
 				Title:    "titleDummu001",
-				Speakers: "speakers001",
+				Speaker: "speakers001",
 			},
 		},
 	}, nil

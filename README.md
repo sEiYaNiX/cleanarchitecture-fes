@@ -1,6 +1,12 @@
 # cleanarchitecture-fes
 CleanArchitectureのサンプル
 
+# DBの初期化・マイグレーション
+```
+export MYSQL_ARGS=cafes:cafes99@(localhost:3306)/cleanarchitecture_fes
+go run maintain/initdb.go
+```
+
 ## 起動
 
 ```
