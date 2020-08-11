@@ -9,10 +9,16 @@ go run maintain/initdb.go
 ```
 
 ## 起動
-(DBの初期化マイグレーションを実施してください)
+(先にDBの初期化マイグレーションを実施してください)
 ```
-docker-compose up -d
 go run src/entorypoint/*.go
+```
+
+## 終了
+Ctrl+Cでgoプロセスを停止
+MySQLサーバーを停止
+```
+docker-compose down
 ```
 
 ### GraphQL codegen
