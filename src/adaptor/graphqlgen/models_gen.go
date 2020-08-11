@@ -8,10 +8,6 @@ type FesEvent struct {
 	Speaker string `json:"speaker"`
 }
 
-type GetFesEventInput struct {
-	ID *string `json:"id"`
-}
-
 type GetFesEventPayload struct {
 	FesEvents []*FesEvent `json:"fesEvents"`
 }

@@ -15,21 +15,14 @@ func TestSaveFesEventUsecase(t *testing.T) {
 			Title:   "FesEventTestDummy",
 			Speaker: "FesEventSpeakerDummy",
 		}
-		createdFesEvent := &domain.FesEvent{
-			ID:      1,
-			Title:   "FesEventTestDummy",
-			Speaker: "FesEventSpeakerDummy",
-		}
 		fesEventRepositoryMock := NewFesEventRepositoryMock()
 		fesEventRepositoryMock.On(
 			"Create",
 			inputFesEvent,
-		).Return(createdFesEvent, nil)
-
+		).Return(nil)
 		uc := feseventinteractor.New(fesEventRepositoryMock)
-		event, err := uc.Save(inputFesEvent)
+		err := uc.Save(inputFesEvent)
 		assert.Nil(t, err)
-		assert.Equal(t, createdFesEvent, event)
 	})
 	t.Run("リポジトリSaveが失敗したとき、リポジトリが返すエラーを得る", func(t *testing.T) {
 		inputFesEvent := domain.FesEvent{
@@ -40,9 +33,9 @@ func TestSaveFesEventUsecase(t *testing.T) {
 		fesEventRepositoryMock.On(
 			"Create",
 			inputFesEvent,
-		).Return(nil, errors.New("RepositoryCreateError"))
+		).Return(errors.New("RepositoryCreateError"))
 		uc := feseventinteractor.New(fesEventRepositoryMock)
-		_, err := uc.Save(inputFesEvent)
+		err := uc.Save(inputFesEvent)
 		assert.EqualError(t, err, "RepositoryCreateError")
 	})
 }

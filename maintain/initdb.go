@@ -21,7 +21,6 @@ type FesEvent struct {
 func main() {
 	var err error
 	args := os.Getenv("MYSQL_ARGS")
-	// log.Printf("Init DataBase :%v", args)
 	if args == "" {
 		panic("Please set MYSQL_ARGS(read the README.)")
 	}

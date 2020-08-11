@@ -57,7 +57,7 @@ type ComplexityRoot struct {
 	}
 
 	Query struct {
-		GetFesEvent func(childComplexity int, input GetFesEventInput) int
+		GetFesEvent func(childComplexity int) int
 	}
 }
 
@@ -65,7 +65,7 @@ type MutationResolver interface {
 	SaveFesEvent(ctx context.Context, input SaveFesEevntInput) (bool, error)
 }
 type QueryResolver interface {
-	GetFesEvent(ctx context.Context, input GetFesEventInput) (*GetFesEventPayload, error)
+	GetFesEvent(ctx context.Context) (*GetFesEventPayload, error)
 }
 
 type executableSchema struct {
@@ -128,12 +128,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_GetFesEvent_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Query.GetFesEvent(childComplexity, args["input"].(GetFesEventInput)), true
+		return e.complexity.Query.GetFesEvent(childComplexity), true
 
 	}
 	return 0, false
@@ -206,9 +201,6 @@ var sources = []*ast.Source{
 }
 `, BuiltIn: false},
 	&ast.Source{Name: "graphql_schema/schema.graphql", Input: `# GetFesEvent
-input GetFesEventInput {
-  id: String
-}
 type GetFesEventPayload {
   fesEvents: [FesEvent]
 }
@@ -221,9 +213,7 @@ input SaveFesEevntInput {
 
 type Query {
   # GetFesEvent
-  GetFesEvent(
-      input: GetFesEventInput!
-  ): GetFesEventPayload!
+  GetFesEvent: GetFesEventPayload!
 }
 
 type Mutation {
@@ -243,20 +233,6 @@ func (ec *executionContext) field_Mutation_SaveFesEvent_args(ctx context.Context
 	var arg0 SaveFesEevntInput
 	if tmp, ok := rawArgs["input"]; ok {
 		arg0, err = ec.unmarshalNSaveFesEevntInput2cleanarchitectureᚑfesᚋsrcᚋadaptorᚋgraphqlgenᚐSaveFesEevntInput(ctx, tmp)
-		if err != nil {
-			return nil, err
-		}
-	}
-	args["input"] = arg0
-	return args, nil
-}
-
-func (ec *executionContext) field_Query_GetFesEvent_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
-	var err error
-	args := map[string]interface{}{}
-	var arg0 GetFesEventInput
-	if tmp, ok := rawArgs["input"]; ok {
-		arg0, err = ec.unmarshalNGetFesEventInput2cleanarchitectureᚑfesᚋsrcᚋadaptorᚋgraphqlgenᚐGetFesEventInput(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -504,16 +480,9 @@ func (ec *executionContext) _Query_GetFesEvent(ctx context.Context, field graphq
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
-	rawArgs := field.ArgumentMap(ec.Variables)
-	args, err := ec.field_Query_GetFesEvent_args(ctx, rawArgs)
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().GetFesEvent(rctx, args["input"].(GetFesEventInput))
+		return ec.resolvers.Query().GetFesEvent(rctx)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1654,24 +1623,6 @@ func (ec *executionContext) ___Type_ofType(ctx context.Context, field graphql.Co
 
 // region    **************************** input.gotpl *****************************
 
-func (ec *executionContext) unmarshalInputGetFesEventInput(ctx context.Context, obj interface{}) (GetFesEventInput, error) {
-	var it GetFesEventInput
-	var asMap = obj.(map[string]interface{})
-
-	for k, v := range asMap {
-		switch k {
-		case "id":
-			var err error
-			it.ID, err = ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		}
-	}
-
-	return it, nil
-}
-
 func (ec *executionContext) unmarshalInputSaveFesEevntInput(ctx context.Context, obj interface{}) (SaveFesEevntInput, error) {
 	var it SaveFesEevntInput
 	var asMap = obj.(map[string]interface{})
@@ -2097,10 +2048,6 @@ func (ec *executionContext) marshalNBoolean2bool(ctx context.Context, sel ast.Se
 		}
 	}
 	return res
-}
-
-func (ec *executionContext) unmarshalNGetFesEventInput2cleanarchitectureᚑfesᚋsrcᚋadaptorᚋgraphqlgenᚐGetFesEventInput(ctx context.Context, v interface{}) (GetFesEventInput, error) {
-	return ec.unmarshalInputGetFesEventInput(ctx, v)
 }
 
 func (ec *executionContext) marshalNGetFesEventPayload2cleanarchitectureᚑfesᚋsrcᚋadaptorᚋgraphqlgenᚐGetFesEventPayload(ctx context.Context, sel ast.SelectionSet, v GetFesEventPayload) graphql.Marshaler {
