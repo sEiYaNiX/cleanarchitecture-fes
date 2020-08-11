@@ -23,9 +23,8 @@ func (r *graphQLResolver) Mutation() graphqlgen.MutationResolver {
 
 func (q *queryResolver) GetFesEvent(
 	ctx context.Context,
-	input graphqlgen.GetFesEventInput,
 ) (*graphqlgen.GetFesEventPayload, error) {
-	log.Printf("GetFesEvent %v:", input.ID)
+	log.Printf("GetFesEvent")
 	// TODO: call to Usecase
 	return &graphqlgen.GetFesEventPayload{
 		FesEvents: []*graphqlgen.FesEvent{

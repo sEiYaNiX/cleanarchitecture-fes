@@ -1,7 +1,4 @@
 # GetFesEvent
-input GetFesEventInput {
-  id: String
-}
 type GetFesEventPayload {
   fesEvents: [FesEvent]
 }
@@ -14,9 +11,7 @@ input SaveFesEevntInput {
 
 type Query {
   # GetFesEvent
-  GetFesEvent(
-      input: GetFesEventInput!
-  ): GetFesEventPayload!
+  GetFesEvent: GetFesEventPayload!
 }
 
 type Mutation {

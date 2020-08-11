@@ -17,12 +17,12 @@ func New(
 	}
 }
 
-func (interactor *FesEeventInteractor) Save(fesEvent domain.FesEvent) (*domain.FesEvent, error) {
-	createdFesEvent, err := interactor.FesEventRepository.Create(fesEvent)
+func (interactor *FesEeventInteractor) Save(fesEvent domain.FesEvent) error {
+	err := interactor.FesEventRepository.Create(fesEvent)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return createdFesEvent, nil
+	return nil
 }
 
 func (interactor *FesEeventInteractor) Get() (*domain.FesEvents, error) {

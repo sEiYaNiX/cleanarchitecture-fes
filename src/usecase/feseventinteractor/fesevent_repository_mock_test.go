@@ -14,13 +14,9 @@ func NewFesEventRepositoryMock() *FesEventRepositoryMock {
 	return &FesEventRepositoryMock{}
 }
 
-func (r *FesEventRepositoryMock) Create(fesEvent domain.FesEvent) (*domain.FesEvent, error) {
+func (r *FesEventRepositoryMock) Create(fesEvent domain.FesEvent) error {
 	ret := r.Called(fesEvent)
-	if ret.Get(0) != nil {
-		return ret.Get(0).(*domain.FesEvent), ret.Error(1)
-	} else {
-		return nil, ret.Error(1)
-	}
+	return ret.Error(0)
 }
 
 func (r *FesEventRepositoryMock) GetAll() (*domain.FesEvents, error) {
