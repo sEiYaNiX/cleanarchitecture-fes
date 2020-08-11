@@ -11,7 +11,7 @@ go run maintain/initdb.go
 ## 起動
 (先にDBの初期化マイグレーションを実施してください)
 ```
-go run src/entorypoint/*.go
+go run src/entrypoint/*.go
 ```
 
 ## 終了
