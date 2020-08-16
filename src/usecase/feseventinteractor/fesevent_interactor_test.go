@@ -3,28 +3,69 @@ package feseventinteractor_test
 import (
 	"cleanarchitecture-fes/src/domain"
 	"cleanarchitecture-fes/src/usecase/feseventinteractor"
-	"log"
-	"os"
+	"errors"
 	"testing"
 
 	"github.com/tj/assert"
 )
 
-func TestFesEventUsecase(t *testing.T) {
-	os.Setenv("MYSQL_ARGS", "cafes:cafes99@(localhost:3306)/cleanarchitecture_fes")
-	t.Run("SaveFesEvent", func(t *testing.T) {
-		inputFesEvent := domain.FesEvent{
-			Title:   "FesEventTestDummy",
-			Speaker: "FesEventSpeakerDummy",
+func TestCASaveFesEventUsecase(t *testing.T) {
+	t.Run("FesEventを渡すと、リポジトリのSaveが正しく呼ばれる", func(t *testing.T) {
+		fesEventRepositoryMock := NewFesEventRepositoryMock()
+		fesEvent := domain.FesEvent{
+			Title:   "TitleDummy001",
+			Speaker: "FesEvents",
 		}
-		uc := feseventinteractor.New()
-		err := uc.Save(inputFesEvent)
+		fesEventRepositoryMock.On(
+			"Create",
+			fesEvent,
+		).Return(nil)
+		uc := feseventinteractor.New(fesEventRepositoryMock)
+		err := uc.Save(fesEvent)
 		assert.Nil(t, err)
 	})
-	t.Run("GetFesEvent", func(t *testing.T) {
-		uc := feseventinteractor.New()
-		events, err := uc.Get()
+	t.Run("リポジトリのSaveが失敗したらエラーを返す", func(t *testing.T) {
+		fesEventRepositoryMock := NewFesEventRepositoryMock()
+		fesEvent := domain.FesEvent{
+			Title:   "TitleDummy001error",
+			Speaker: "FesEventserror",
+		}
+		fesEventRepositoryMock.On(
+			"Create",
+			fesEvent,
+		).Return(errors.New("RepoError!!!"))
+		uc := feseventinteractor.New(fesEventRepositoryMock)
+		err := uc.Save(fesEvent)
+		assert.EqualError(t, err, "RepoError!!!")
+	})
+}
+
+func TestCAGetFesEventUsecase(t *testing.T) {
+	t.Run("FesEventsが返る", func(t *testing.T) {
+		fesEvents := &domain.FesEvents{
+			{
+				ID:      1,
+				Title:   "FesEvents001",
+				Speaker: "Hanako",
+			},
+			{
+				ID:      2,
+				Title:   "FesEvents002",
+				Speaker: "Taro",
+			},
+			{
+				ID:      3,
+				Title:   "FesEvent003",
+				Speaker: "Jiro",
+			},
+		}
+		fesEventRepositoryMock := NewFesEventRepositoryMock()
+		fesEventRepositoryMock.On(
+			"GetAll",
+		).Return(fesEvents, nil)
+		uc := feseventinteractor.New(fesEventRepositoryMock)
+		retFesEvents, err := uc.Get()
 		assert.Nil(t, err)
-		log.Print(events)
+		assert.Equal(t, fesEvents, retFesEvents)
 	})
 }
