@@ -1,6 +1,13 @@
 # cleanarchitecture-fes
 CleanArchitectureのサンプル
 
+## 環境準備
+必要なもの
+- VSCodeでGoが動かせる環境
+- docker-compose
+
+ToDo:手順
+
 ## DBの初期化・マイグレーション
 ```
 export MYSQL_ARGS=cafes:cafes99@(localhost:3306)/cleanarchitecture_fes
