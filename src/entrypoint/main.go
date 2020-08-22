@@ -2,9 +2,11 @@ package main
 
 import (
 	"cleanarchitecture-fes/src/adaptor/graphqlgen"
+	"cleanarchitecture-fes/src/adaptor/repository"
 	"cleanarchitecture-fes/src/usecase/feseventinteractor"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
@@ -13,7 +15,16 @@ import (
 
 func main() {
 	port := "19001"
-	fesEventInteractor := feseventinteractor.New()
+	args := os.Getenv("MYSQL_ARGS")
+	if args == "" {
+		panic("please set MYASQL_ARGS env. read the readme")
+	}
+	fesEventRepository, err := repository.New(args)
+	if err != nil {
+		panic(err)
+	}
+
+	fesEventInteractor := feseventinteractor.New(fesEventRepository)
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	http.Handle(
 		"/query",
