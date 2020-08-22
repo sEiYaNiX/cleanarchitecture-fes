@@ -1,24 +1,30 @@
 package feseventinteractor
 
 import (
+	"cleanarchitecture-fes/src/adaptor/repository"
 	"cleanarchitecture-fes/src/domain"
-	"cleanarchitecture-fes/src/usecase"
+	"os"
 )
 
 type FesEeventInteractor struct {
-	FesEventRepository usecase.FesEventRepository
 }
 
-func New(
-	fesEventRepository usecase.FesEventRepository,
-) *FesEeventInteractor {
-	return &FesEeventInteractor{
-		FesEventRepository: fesEventRepository,
-	}
+func New() *FesEeventInteractor {
+	return &FesEeventInteractor{}
 }
 
 func (interactor *FesEeventInteractor) Save(fesEvent domain.FesEvent) error {
-	err := interactor.FesEventRepository.Create(fesEvent)
+	args := os.Getenv("MYSQL_ARGS")
+	if args == "" {
+		panic("Please set MYSQL_ARGS(read the README.)")
+	}
+
+	fesEventRepository, err := repository.New(args)
+	if err != nil {
+		return err
+	}
+
+	err = fesEventRepository.Create(fesEvent)
 	if err != nil {
 		return err
 	}
@@ -26,7 +32,17 @@ func (interactor *FesEeventInteractor) Save(fesEvent domain.FesEvent) error {
 }
 
 func (interactor *FesEeventInteractor) Get() (*domain.FesEvents, error) {
-	createdFesEvent, err := interactor.FesEventRepository.GetAll()
+	args := os.Getenv("MYSQL_ARGS")
+	if args == "" {
+		panic("Please set MYSQL_ARGS(read the README.)")
+	}
+
+	fesEventRepository, err := repository.New(args)
+	if err != nil {
+		return nil, err
+	}
+
+	createdFesEvent, err := fesEventRepository.GetAll()
 	if err != nil {
 		return nil, err
 	}
